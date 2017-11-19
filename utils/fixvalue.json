@@ -1,0 +1,106 @@
+{
+  "Database" :
+  {
+    "MongoDB"     : "mongodb://localhost:27017/",
+    "Schema"      : "ezhelper",
+    "Postgre"     : "postgres://postgres:hana13062009@locahost:5432/warehouse"
+  },
+  "Server" :
+  {
+    "Port"      : "41014",
+    "Koneksi"   : "http://",
+    "JWTSecret" : "aignatd04121974"
+  },
+  "Pesan" :
+  {
+    "strError"  		        : "error",
+    "strKonekDBSukses"      : "Successfully connected to the database",
+    "strTidakAda"		        : "Not Found",
+    "strLoginSalah"		      : "Data akun tidak ada",
+    "strLoginBlokir"	      : "Data akun diblokir",
+    "strLoginGagal"		      : "Proses login gagal",
+    "strLoginSukses"	      : "Proses login berhasil",
+    "strAkunAda"	          : "Data akun sudah ada",
+    "strRegisGagal"		      : "Proses registrasi gagal",
+    "strRegisSukses"	      : "Proses registrasi berhasil",
+    "strStatusLogin"	      : "Login",
+    "strDataProfile"	      : "Kosong",
+    "strLogoutSalah"	      : "Proses logout salah",
+    "strLogoutGagal"	      : "Proses logout gagal",
+    "strLogoutSukses"	      : "Proses logout berhasil",
+    "strStatusLogout"	      : "Logout",
+    "strProfileUpdate"	    : "Update",
+    "strProfileGagal"	      : "Update profile gagal",
+    "strProfileSukses"      : "Update profile berhasil",
+    "strPasswordGagal"      : "Rubah password gagal",
+    "strPasswordSukses"     : "Rubah password berhasil",
+    "strUploadGagal"        : "Upload file gagal",
+    "strUploadSukses"       : "Upload file berhasil",
+    "strDownloadSukses"     : "Download profile berhasil",
+    "strNoToken"            : "Token tidak ditemukan",
+    "strVerTokenGagal"      : "Verifikasi token gagal",
+	  "strKartuGagal"         : "Request kartu baru error",
+    "strKartuSukses"        : "Request kartu baru sukses",
+    "strKartuSalah"         : "Request kartu baru gagal",
+    "strRequestGagal"       : "Request pemasok error",
+    "strRequestSukses"      : "Request pemasok sukses",
+    "strRequestSalah"       : "Request pemasok gagal",
+    "strTimbanganGagal"     : "Upload data timbang gagal",
+    "strTimbanganSukses"    : "Upload data timbang sukses",
+    "synchronizeGagal"      : "Synchronize proses gagal",
+    "synchronizeSukses"     : "Synchronize proses sukses",
+    "synchronizeKosong"     : "Data proses kosong",
+    "PotonganGagal"         : "Update potongan gagal",
+    "PotonganSukses"        : "Update potongan sukses",
+    "UpdateQCGagal"         : "Update data QC gagal",
+    "UpdateQCSukses"        : "Update data QC sukses",
+    "PembayaranGagal"       : "Proses bayar gagal",
+    "PembayaranSukses"      : "Proses bayar sukses",
+    "NettoGagal"            : "Timbang netto gagal",
+    "NettoSukses"           : "Timbang netto sukses",
+    "strTimbangBaruGagal"   : "Timbang baru gagal",
+    "strTimbangBaruSukses"  : "Timbang baru sukses",
+    "DataHistoryGagal"      : "Data history gagal",
+    "DataHistorySukses"     : "Data history sukses",
+    "DataHistoryKosong"     : "Data history kosong",
+    "DetailHistoryGagal"    : "Detail history gagal",
+    "DetailHistorySukses"   : "Detail history sukses",
+	  "DataTimbangSukses"     : "Data timbang sukses",
+	  "DataTimbangGagal"      : "Data timbang gagal",
+	  "DataTimbangKosong"     : "Data timbang kosong",
+    "DataProductSukses"     : "Data product sukses",
+    "DataProductGagal"      : "Data product gagal",
+    "DataProductKosong"     : "Data product kosong",
+    "DataWarehouseSukses"   : "Data warehouse sukses",
+    "DataWarehouseGagal"    : "Data warehouse gagal",
+    "DataWarehouseKosong"   : "Data warehouse kosong",
+    "DataDeviceSukses"      : "Daftar device sukses",
+    "DataDeviceGagal"       : "Daftar device gagal",
+    "UploadPhotoSukses"     : "Upload photo sukses",
+    "UploadPhotoGagal"      : "Upload photo gagal"
+  },
+  "Kode" :
+  {
+    "Sukses"      : 0,
+    "Gagal"       : -1,
+    "Empty"       : -2,
+    "NotSuccess"  : 201,
+    "Error"       : 202,
+    "OK"          : 200,
+    "TokenFailed" : 401
+  },
+  "RouterAPIV1" :
+  {
+    "users"     : "/api/v1/users",
+    "devices"   : "/api/v1/devices",
+    "customers" : "/api/v1/customers",
+    "formulirs" : "/api/v1/formulirs",
+    "history"   : "/api/v1/history",
+    "proses"    : "/api/v1/proses",
+    "device"    : "/api/v1/device"
+  },
+  "PhotoDir" :
+  {
+    "Pemasok"   : "./photo/pemasok/"
+  }
+}
