@@ -4,6 +4,8 @@
 const pgconn = require('./../utils/PGConn');
 let strQuery;
 let data;
+let fixvalue = require('./../utils/fixvalue.json');
+let Fungsi = require('./../utils/fungsi');
 
 module.exports.modelDataWarehouse =
   function (callback)
@@ -13,16 +15,17 @@ module.exports.modelDataWarehouse =
   };
 
 module.exports.modeldaftardevice =
-  function (req, callback)
+  function (req, res, callback)
   {
     data = req.body["DataDevice"];
     let deviceid = req.body["DataDevice"]["deviceid"];
+    let unitid = req.body["DataDevice"]["businessunit"];
 
-    var intIdx = 0;
-    var datakey = '(';
-    var dataisi = '';
+    let intIdx = 0;
+    let datakey = '(';
+    let dataisi = '';
 
-    for (var key in data)
+    for (let key in data)
     {
       if(intIdx > 0)
       {
@@ -37,8 +40,22 @@ module.exports.modeldaftardevice =
 
     datakey += ')';
 
-    strQuery = 'INSERT INTO "m_device" ' + datakey + ' SELECT ' + dataisi + ' WHERE NOT EXISTS(SELECT * FROM m_device WHERE deviceid=\''+
-               deviceid + '\')';
-    pgconn.query(strQuery, callback);
+    strQuery = 'SELECT * FROM m_device WHERE deviceid=\'' + deviceid + '\'';
+
+    pgconn.query(strQuery, (err, result) =>
+    {
+      if (err)
+        res.status(fixvalue.Kode.Error).json(Fungsi.DataDeviceGagal());
+      else
+      {
+        if(result.rows.length === 0)
+          strQuery = 'INSERT INTO "m_device" ' + datakey + ' SELECT ' + dataisi +
+                     ' WHERE NOT EXISTS(SELECT * FROM m_device WHERE deviceid=\'' + deviceid + '\')';
+        else
+          strQuery = 'UPDATE "m_device" SET businessunit=' + unitid + ' WHERE deviceid=\'' + deviceid + '\'';
+
+        pgconn.query(strQuery, callback);
+      }
+    });
   };
 

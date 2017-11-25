@@ -2,12 +2,12 @@
  * Created by ignat on 03-Jan-17.
  */
 
-var DeviceModel = require('../models/devicemodel');
-var Fungsi = require('./../utils/fungsi');
-var jwt = require("jsonwebtoken");
-var fixvalue = require('./../utils/fixvalue.json');
+let DeviceModel = require('../models/devicemodel');
+let Fungsi = require('./../utils/fungsi');
+let jwt = require("jsonwebtoken");
+let fixvalue = require('./../utils/fixvalue.json');
 
-var ctrlDataWarehouse = function(req, res)
+let ctrlDataWarehouse = function(req, res)
 {
   DeviceModel.modelDataWarehouse(function(err, result)
   {
@@ -21,15 +21,12 @@ var ctrlDataWarehouse = function(req, res)
   });
 };
 
-var ctrldaftardevice = function(req, res)
+let ctrldaftardevice = function(req, res)
 {
-  DeviceModel.modeldaftardevice(req, function(err)
+  DeviceModel.modeldaftardevice(req, res, function(err)
   {
     if(err)
-    {
-      console.log(err);
       res.status(fixvalue.Kode.Error).json(Fungsi.DataDeviceGagal());
-    }
     else
       res.status(fixvalue.Kode.OK).json(Fungsi.DataDeviceSukses());
   });
