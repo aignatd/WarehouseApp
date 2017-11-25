@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* API for upload formulir besar */
-router.post('/uploadbesar', formulirctrl.postPekerjaan, formulirctrl.postQueryUpload, formulirctrl.postTimbangBesar);
+router.post('/uploadbesar', formulirctrl.postPekerjaan, formulirctrl.postTimbangBesar);
 
 /* API for tambah data timbangan */
 router.post('/tambah', formulirctrl.postUpdate, formulirctrl.postTambah);
@@ -17,7 +17,7 @@ router.post('/tambah', formulirctrl.postUpdate, formulirctrl.postTambah);
 router.post('/bayar', formulirctrl.postBayar);
 
 /* API for upload formulir kecil */
-router.post('/uploadkecil', formulirctrl.postPekerjaan, formulirctrl.postQueryUpload, formulirctrl.postTimbangKecil);
+router.post('/uploadkecil', formulirctrl.postPekerjaan, formulirctrl.postTimbangKecil);
 
 /* API untuk upload photo barang timbangan - Input data berupa nomor handphone dan device id */
 router.post('/photobarang', formulirctrl.postphotobarang);

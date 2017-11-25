@@ -36,57 +36,10 @@ let ctrlPekerjaan = function(req, res, next)
 {
   FormulirModel.modelPekerjaan(req, res, function(err, result)
   {
-    if((err) || (result.rowCount === 0))
+    if (err || (result.rowCount === 0) || (result === undefined))
       res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
     else
-    {
       return next();
-    }
-  });
-};
-
-let ctrlQueryUpload = function(req, res, next)
-{
-  FormulirModel.modelQueryUpload(req, res, function(err, result)
-  {
-    if((err) || (result.rowCount === 0))
-      res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
-    else
-    {
-      let jenistimbang = req.body["DataFormulir"]["jenistimbang"];
-      let datatimbang = req.body["DataTimbangan"];
-
-      req.body["DataFormulir"]["pekerjaanid"] = result.rows[0]["id"];
-
-      if(jenistimbang === 1)
-      {
-        for (let i=0; i<datatimbang.length; i++)
-        {
-          datatimbang[i]["pekerjaanid"] = result.rows[0]["id"];
-        }
-
-        req.body["DataTimbangan"] = datatimbang;
-      }
-      else
-      if(jenistimbang === 2)
-        req.body["DataTimbangan"]["pekerjaanid"] = result.rows[0]["id"];
-
-      return next();
-    }
-  });
-};
-
-let ctrlTimbangBesar = function(req, res)
-{
-  FormulirModel.modelTimbangBesar(req, res, function(err, result)
-  {
-    if((err) || (result.rowCount === 0))
-      res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
-    else
-    {
-      let hasil = {"pemasokid" : req.body["DataFormulir"]["pemasokid"], "pekerjaanid" : req.body["DataFormulir"]["pekerjaanid"]};
-      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses(hasil));
-    }
   });
 };
 
@@ -128,7 +81,18 @@ let ctrlTimbangKecil = function(req, res)
 {
   FormulirModel.modelTimbangKecil(req, res, function(err, result)
   {
-    if((err) || (result.rowCount === 0))
+    if(err || (result.rowCount === 0) || (result === undefined))
+      res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
+    else
+      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses());
+  });
+};
+
+let ctrlTimbangBesar = function(req, res)
+{
+  FormulirModel.modelTimbangBesar(req, res, function(err, result)
+  {
+    if (err || (result.rowCount === 0) || (result === undefined))
       res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
     else
       res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses());
@@ -146,6 +110,6 @@ let ctrlphotobarang = function(req, res)
   });
 };
 
-module.exports = {postPekerjaan : ctrlPekerjaan, postQueryUpload : ctrlQueryUpload, postTimbangBesar : ctrlTimbangBesar,
-                  postTambah : ctrlTambah, postUpdate : ctrlUpdate, postBayar : ctrlBayar, postTimbangKecil : ctrlTimbangKecil,
-                  postphotobarang : ctrlphotobarang};
+module.exports = {postPekerjaan : ctrlPekerjaan, postTambah : ctrlTambah, postUpdate : ctrlUpdate,
+                  postBayar : ctrlBayar, postTimbangKecil : ctrlTimbangKecil,
+                  postphotobarang : ctrlphotobarang, postTimbangBesar : ctrlTimbangBesar};

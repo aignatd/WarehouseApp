@@ -11,10 +11,6 @@ const pgp = require('pg-promise')(/*options*/);
 
 module.exports =
 {
-  PromiseDB	:	function()
-  {
-    return pgp(fixvalue.Database.Postgre);
-  },
   LoginBlokir	:	function()
   {
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginBlokir}};
@@ -104,10 +100,9 @@ module.exports =
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strTimbanganGagal}};
     return strJSON;
   },
-  UploadTimbangSukses	:	function(hasil)
+  UploadTimbangSukses	:	function()
   {
-    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strTimbanganSukses},
-      "PrinterRsp"	:	hasil};
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strTimbanganSukses}};
     return strJSON;
   },
   synchronizeGagal	:	function()
