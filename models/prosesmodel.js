@@ -82,6 +82,7 @@ module.exports.modelupdateqc =
 module.exports.modelnetto =
   function (req, res, callback)
   {
+    console.log(req.body);
     data = req.body["DataTimbangan"];
     let netto = data["tonasenetto"];
     let id = data["id"];
