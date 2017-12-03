@@ -18,7 +18,9 @@ let storagephoto = sdkmulter.diskStorage(
       let pemasokid = req.body["PemasokID"];
       let pekerjaanid = req.body["PekerjaanID"];
 
-      filephoto = fixvalue.PhotoDir.Pemasok + warehouse + '/' + pemasokid + '/' + pekerjaanid;
+//      filephoto = fixvalue.PhotoDir.Pemasok + warehouse + '/' + pemasokid + '/' + pekerjaanid + '/';
+      filephoto = '/home/photo/pemasok/' + warehouse + '/' + pemasokid + '/' + pekerjaanid + '/';
+
       sdkmulter({dest : filephoto});
       callback(null, filephoto);
     },

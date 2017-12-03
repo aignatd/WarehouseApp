@@ -11,6 +11,8 @@ let device;
 module.exports.modelUserLogin =
   function (req, res, callback)
   {
+    console.log(req.body);
+
     data = req.body["DataUser"];
     device = req.body["DataDevice"]["deviceid"];
 

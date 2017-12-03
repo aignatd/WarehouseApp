@@ -11,7 +11,9 @@ let data;
 module.exports.modelHistoryUSer =
   function (req, res, callback)
   {
-    data = req.body["DataUser"];
+    console.log(req.body);
+    data = req.body["DataUser"]["UserID"];
+    let jenistimbang = req.body["DataProses"]["jenistimbang"];
 
     strQuery = "SELECT a.id, a.nopolisi, a.jumlahtimbang, a.pemasokid,\n" +
       "\tCASE\n" +
@@ -22,7 +24,8 @@ module.exports.modelHistoryUSer =
       "FROM\n" +
       "\tpekerjaan a\n" +
       "WHERE\n" +
-      "\tuserid=" + data["UserID"] + " AND ((permintaan=-1 AND pekerjaan=-1) OR (permintaan=-1 AND pekerjaan=-2)) ORDER BY ID ASC";
+      "\tuserid=" + data + " AND jenistimbang=" + jenistimbang +
+      " AND ((permintaan=-1 AND pekerjaan=-1) OR (permintaan=-1 AND pekerjaan=-2)) ORDER BY ID ASC";
 
     pgconn.query(strQuery, callback);
   };
