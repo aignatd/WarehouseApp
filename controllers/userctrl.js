@@ -2,12 +2,12 @@
  * Created by ignat on 03-Jan-17.
  */
 
-var UserModel = require('./../models/usermodel');
-var Fungsi = require('./../utils/fungsi');
-var jwt = require("jsonwebtoken");
-var fixvalue = require('./../utils/fixvalue.json');
+let UserModel = require('./../models/usermodel');
+let Fungsi = require('./../utils/fungsi');
+let jwt = require("jsonwebtoken");
+let fixvalue = require('./../utils/fixvalue.json');
 
-var ctrlUserLogin = function(req, res, next)
+let ctrlUserLogin = function(req, res, next)
 {
   UserModel.modelUserLogin(req, res, function(err, result)
   {
@@ -28,7 +28,7 @@ var ctrlUserLogin = function(req, res, next)
         delete result["anonymous"];
         result["rows"][0]["deviceid"] = req.body["DataDevice"]["DeviceID"];
 
-        var hasil = {"name" : result["rows"][0]["name"], "warehouse" : result["rows"][0]["warehouse"],
+          let hasil = {"name" : result["rows"][0]["name"], "warehouse" : result["rows"][0]["warehouse"],
                      "kodewarehouse" : result["rows"][0]["kodewarehouse"],
                      "RoleID" : result["rows"][0]["roleid"], "UserID" : result["rows"][0]["id"]};
         delete result["rows"][0]["active"];
@@ -44,9 +44,9 @@ var ctrlUserLogin = function(req, res, next)
   });
 };
 
-var ctrlUserLogout = function(req, res)
+let ctrlUserLogout = function(req, res)
 {
-  var Decode = req.body["DataUser"]["Token"];
+  let Decode = req.body["DataUser"]["Token"];
 
   jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
   {
@@ -80,9 +80,9 @@ var ctrlUserLogout = function(req, res)
   });
 };
 
-var ctrlPassword = function(req, res)
+let ctrlPassword = function(req, res)
 {
-  var Decode = req.body["DataUser"]["Token"];
+  let Decode = req.body["DataUser"]["Token"];
 
   jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
   {
@@ -110,7 +110,7 @@ var ctrlPassword = function(req, res)
   });
 };
 
-var ctrlRole = function(req, res, next)
+let ctrlRole = function(req, res, next)
 {
   UserModel.modelRole(req, res, function(err, results)
   {
@@ -139,5 +139,16 @@ var ctrlRole = function(req, res, next)
   });
 };
 
+let ctrlDaftarUser = function(req, res)
+{
+  UserModel.modeldaftaruser(req, res, function(err)
+  {
+    if(err)
+      res.status(fixvalue.Kode.Error).json(Fungsi.DaftarUserGagal());
+    else
+      res.status(fixvalue.Kode.OK).json(Fungsi.DaftarUserSukses());
+  });
+};
+
 module.exports = {postUserLogin : ctrlUserLogin, postUserLogout : ctrlUserLogout, postPassword : ctrlPassword,
-                  postRole : ctrlRole};
+                  postRole : ctrlRole, postDaftarUser : ctrlDaftarUser};

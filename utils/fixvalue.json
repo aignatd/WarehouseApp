@@ -39,7 +39,7 @@
     "strDownloadSukses"     : "Download profile berhasil",
     "strNoToken"            : "Token tidak ditemukan",
     "strVerTokenGagal"      : "Verifikasi token gagal",
-	  "strKartuGagal"         : "Request kartu baru error",
+	"strKartuGagal"         : "Request kartu baru error",
     "strKartuSukses"        : "Request kartu baru sukses",
     "strKartuSalah"         : "Request kartu baru gagal",
     "strRequestGagal"       : "Request pemasok error",
@@ -65,9 +65,9 @@
     "DataHistoryKosong"     : "Data history kosong",
     "DetailHistoryGagal"    : "Detail history gagal",
     "DetailHistorySukses"   : "Detail history sukses",
-	  "DataTimbangSukses"     : "Data timbang sukses",
-	  "DataTimbangGagal"      : "Data timbang gagal",
-	  "DataTimbangKosong"     : "Data timbang kosong",
+	"DataTimbangSukses"     : "Data timbang sukses",
+	"DataTimbangGagal"      : "Data timbang gagal",
+	"DataTimbangKosong"     : "Data timbang kosong",
     "DataProductSukses"     : "Data product sukses",
     "DataProductGagal"      : "Data product gagal",
     "DataProductKosong"     : "Data product kosong",
@@ -77,7 +77,10 @@
     "DataDeviceSukses"      : "Daftar device sukses",
     "DataDeviceGagal"       : "Daftar device gagal",
     "UploadPhotoSukses"     : "Upload photo sukses",
-    "UploadPhotoGagal"      : "Upload photo gagal"
+    "UploadPhotoGagal"      : "Upload photo gagal",
+    "DaftarUserSukses"      : "Daftar user sukses,\ntunggu status admin",
+    "DaftarUserGagal"       : "Daftar user gagal",
+    "DaftarUserAda"         : "User sudah ada"
   },
   "Kode" :
   {

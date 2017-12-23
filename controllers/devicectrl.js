@@ -21,14 +21,16 @@ let ctrlDataWarehouse = function(req, res)
   });
 };
 
-let ctrldaftardevice = function(req, res)
+let ctrldaftardevice = function(req, res, next)
 {
   DeviceModel.modeldaftardevice(req, res, function(err)
   {
     if(err)
       res.status(fixvalue.Kode.Error).json(Fungsi.DataDeviceGagal());
     else
-      res.status(fixvalue.Kode.OK).json(Fungsi.DataDeviceSukses());
+      return next();
+
+//      res.status(fixvalue.Kode.OK).json(Fungsi.DataDeviceSukses());
   });
 };
 

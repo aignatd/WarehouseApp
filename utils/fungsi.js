@@ -284,5 +284,20 @@ module.exports =
     for (let i = 0; i < hex.length; i += 2)
       str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     return str;
+  },
+  DaftarUserSukses	:	function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.DaftarUserSukses}};
+    return strJSON;
+  },
+  DaftarUserGagal	:	function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DaftarUserGagal}};
+    return strJSON;
+  },
+  DaftarUserAda	:	function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DaftarUserAda}};
+    return strJSON;
   }
 };
