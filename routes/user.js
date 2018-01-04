@@ -21,4 +21,10 @@ router.post('/password', userctrl.postPassword);
 /* API for pendaftaran user password */
 router.post('/daftaruser', devicectrl.postdaftardevice, userctrl.postDaftarUser);
 
+/* API for get user profile */
+router.post('/ambilprofile', userctrl.postAmbilProfile);
+
+/* API for update user profile */
+router.post('/updateprofile', userctrl.postUpdateProfile);
+
 module.exports = router;

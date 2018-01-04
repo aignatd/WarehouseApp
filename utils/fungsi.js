@@ -299,5 +299,31 @@ module.exports =
   {
     strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DaftarUserAda}};
     return strJSON;
+  },
+  UpdateProfileGagal  :	function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.UpdateProfileGagal}};
+    return strJSON;
+  },
+  UpdateProfileSukses	: function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.UpdateProfileSukses}};
+    return strJSON;
+  },
+  AmbilProfileGagal  :	function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.AmbilProfileGagal}};
+    return strJSON;
+  },
+  AmbilProfileSukses  : function(result)
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.AmbilProfileSukses},
+	             "ProfileRsp"	:	result};
+    return strJSON;
+  },
+  AmbilProfileKosong  : function()
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.AmbilProfileKosong}};
+    return strJSON;
   }
 };

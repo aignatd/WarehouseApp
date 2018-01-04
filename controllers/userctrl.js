@@ -25,19 +25,19 @@ let ctrlUserLogin = function(req, res, next)
       }
       else
       {
-        delete result["anonymous"];
-        result["rows"][0]["deviceid"] = req.body["DataDevice"]["DeviceID"];
+        result["rows"][0]["deviceid"] = req.body["DataDevice"]["deviceid"];
 
-          let hasil = {"name" : result["rows"][0]["name"], "warehouse" : result["rows"][0]["warehouse"],
+        let hasil = {"name" : result["rows"][0]["name"], "warehouse" : result["rows"][0]["warehouse"],
                      "kodewarehouse" : result["rows"][0]["kodewarehouse"],
                      "RoleID" : result["rows"][0]["roleid"], "UserID" : result["rows"][0]["id"]};
         delete result["rows"][0]["active"];
         delete result["rows"][0]["warehouse"];
 
-        hasil["remember_token"] = jwt.sign(result["rows"][0], fixvalue.Server.JWTSecret, {expiresIn : 1440});
+        hasil["remember_token"] = jwt.sign({"Token" : result["rows"][0]}, fixvalue.Server.JWTSecret, {expiresIn : "1 days"});
         req.body["Hasil"] = hasil;
 
-        console.log("Login selesai");
+        console.log(req.body["Hasil"]);
+	      console.log("Login selesai");
         return next();
       }
     }
@@ -141,7 +141,7 @@ let ctrlRole = function(req, res, next)
 
 let ctrlDaftarUser = function(req, res)
 {
-  UserModel.modeldaftaruser(req, res, function(err)
+  UserModel.modelDaftarUser(req, res, function(err)
   {
     if(err)
       res.status(fixvalue.Kode.Error).json(Fungsi.DaftarUserGagal());
@@ -150,5 +150,44 @@ let ctrlDaftarUser = function(req, res)
   });
 };
 
+let ctrlAmbilProfile = function(req, res)
+{
+	console.log(req.body);
+  let Decode = req.body["DataUser"]["Token"];
+
+  jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
+  {
+    if (err)
+    {
+      res.status(fixvalue.Kode.TokenFailed);
+      res.json(Fungsi.TokenVerifikasiGagal());
+    }
+    else
+    {
+      UserModel.modelAmbilProfile(decoded, req, res, function(err, results)
+      {
+        if(err)
+          res.status(fixvalue.Kode.Error).json(Fungsi.AmbilProfileGagal());
+        else
+        if (results.rows.length === 0)
+          res.status(fixvalue.Kode.NotSuccess).json(Fungsi.AmbilProfileKosong());
+        else
+	        res.status(fixvalue.Kode.OK).json(Fungsi.AmbilProfileSukses(results.rows[0]));
+      });
+    }
+  });
+};
+
+let ctrlUpdateProfile = function(req, res)
+{
+	UserModel.modelUpdateProfile(req, res, function(err)
+	{
+		if(err)
+			res.status(fixvalue.Kode.Error).json(Fungsi.UpdateProfileGagal());
+		else
+			res.status(fixvalue.Kode.OK).json(Fungsi.UpdateProfileSukses());
+	});
+};
 module.exports = {postUserLogin : ctrlUserLogin, postUserLogout : ctrlUserLogout, postPassword : ctrlPassword,
-                  postRole : ctrlRole, postDaftarUser : ctrlDaftarUser};
+                  postRole : ctrlRole, postDaftarUser : ctrlDaftarUser, postAmbilProfile : ctrlAmbilProfile,
+                  postUpdateProfile : ctrlUpdateProfile};
