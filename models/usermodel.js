@@ -11,17 +11,17 @@ let device;
 
 const shouldAbort = (err) =>
 {
-    if (err)
-    {
-        console.error('Error in transaction', err.stack)
-        pgconn.query('ROLLBACK', (err) =>
-        {
-            if (err)
-                console.error('Error rolling back client', err.stack)
-        });
-    }
+	if (err)
+	{
+		console.error('Error in transaction', err.stack)
+		pgconn.query('ROLLBACK', (err) =>
+		{
+			if (err)
+				console.error('Error rolling back client', err.stack)
+		});
+	}
 
-    return !!err;
+	return !!err;
 };
 
 module.exports.modelUserLogin =
@@ -127,48 +127,42 @@ module.exports.modelAmbilProfile =
 	};
 
 module.exports.modelUpdateProfile =
-	function (req, res, callback)
+	function (Decode, req, res, callback)
 	{
-		data = req.body["DataUser"];
-		let username = req.body["DataUser"]["username"];
+		data = req.body["DataProfile"];
+		let pegawaiid = Decode["Token"]["pegawaiid"];
+
+		delete data["Token"];
 
 		let intIdx = 0;
-		let datakey = '(';
 		let dataisi = '';
 
 		for (let key in data)
 		{
 			if(intIdx > 0)
-			{
-				datakey += ',';
 				dataisi += ',';
-			}
 
-			datakey += '"' + key + '"';
-			dataisi += "'" + data[key] + "'";
+			dataisi += '"' + key + '"=' + "'" + data[key] + "'";
 			intIdx++;
 		}
 
-		datakey += ')';
+		strQuery = 'SELECT * FROM m_pegawai WHERE id=\'' + pegawaiid + '\'';
 
-		strQuery = 'SELECT * FROM users WHERE username=\'' + username + '\'';
-
-		pgconn.query(strQuery, (err, resqueryuser) =>
+		pgconn.query(strQuery, (err, resqueryprofile) =>
 		{
-			if (shouldAbort(err) || (resqueryuser === undefined))
-				res.status(fixvalue.Kode.Error).json(Fungsi.DaftarUserGagal());
+			if (shouldAbort(err) || (resqueryprofile === undefined))
+				res.status(fixvalue.Kode.Error).json(Fungsi.UpdateProfileGagal());
 			else
-			if(resqueryuser.rows.length !== 0)
-				res.status(fixvalue.Kode.Error).json(Fungsi.DaftarUserAda());
+			if(resqueryprofile.rows.length === 0)
+				res.status(fixvalue.Kode.NotSuccess).json(Fungsi.AmbilProfileKosong());
 			else
 			{
-				strQuery = 'INSERT INTO "users" ' + datakey + ' SELECT ' + dataisi +
-					' WHERE NOT EXISTS(SELECT * FROM users WHERE username=\'' + username + '\')';
+				strQuery = 'UPDATE m_pegawai SET ' + dataisi + ' WHERE id=' + pegawaiid;
 
-				pgconn.query(strQuery, (err, resdevice) =>
+				pgconn.query(strQuery, (err, resprofile) =>
 				{
-					if (shouldAbort(err) || (resdevice === undefined))
-						res.status(fixvalue.Kode.Error).json(Fungsi.DaftarUserGagal());
+					if (shouldAbort(err) || (resprofile === undefined))
+						res.status(fixvalue.Kode.Error).json(Fungsi.UpdateProfileGagal());
 					else
 						pgconn.query('COMMIT', callback);
 				});

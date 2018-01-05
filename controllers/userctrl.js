@@ -19,10 +19,7 @@ let ctrlUserLogin = function(req, res, next)
     else
     {
       if(result["rows"][0]["active"] === false)
-      {
-        res.status(fixvalue.Kode.NotSuccess);
-        res.json(Fungsi.LoginBlokir());
-      }
+        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.LoginBlokir());
       else
       {
         result["rows"][0]["deviceid"] = req.body["DataDevice"]["deviceid"];
@@ -36,7 +33,6 @@ let ctrlUserLogin = function(req, res, next)
         hasil["remember_token"] = jwt.sign({"Token" : result["rows"][0]}, fixvalue.Server.JWTSecret, {expiresIn : "1 days"});
         req.body["Hasil"] = hasil;
 
-        console.log(req.body["Hasil"]);
 	      console.log("Login selesai");
         return next();
       }
@@ -51,30 +47,18 @@ let ctrlUserLogout = function(req, res)
   jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
   {
     if (err)
-    {
-      res.status(fixvalue.Kode.TokenFailed);
-      res.json(Fungsi.TokenVerifikasiGagal());
-    }
+      res.status(fixvalue.Kode.TokenFailed).json(Fungsi.TokenVerifikasiGagal());
     else
     {
       UserModel.modelUserLogout(decoded, res, function(err, result)
       {
         if(err)
-        {
-          res.status(fixvalue.Kode.Error);
-          res.json(Fungsi.LogoutGagal());
-        }
+          res.status(fixvalue.Kode.Error).json(Fungsi.LogoutGagal());
         else
         if(result.rows.length === 0)
-        {
-          res.status(fixvalue.Kode.NotSuccess);
-          res.json(Fungsi.LogoutSalah());
-        }
+          res.status(fixvalue.Kode.NotSuccess).json(Fungsi.LogoutSalah());
         else
-        {
-          res.status(fixvalue.Kode.OK);
-          res.json(Fungsi.LogoutSukses());
-        }
+          res.status(fixvalue.Kode.OK).json(Fungsi.LogoutSukses());
       });
     }
   });
@@ -87,24 +71,15 @@ let ctrlPassword = function(req, res)
   jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
   {
     if (err)
-    {
-      res.status(fixvalue.Kode.TokenFailed);
-      res.json(Fungsi.TokenVerifikasiGagal());
-    }
+      res.status(fixvalue.Kode.TokenFailed).json(Fungsi.TokenVerifikasiGagal());
     else
     {
       UserModel.modelGantiPassword(decoded, req, res, function(err, result)
       {
         if((err) || (result.rowCount === 0))
-        {
-          res.status(fixvalue.Kode.NotSuccess);
-          res.json(Fungsi.PasswordGagal());
-        }
+          res.status(fixvalue.Kode.NotSuccess).json(Fungsi.PasswordGagal());
         else
-        {
-          res.status(fixvalue.Kode.OK);
-          res.json(Fungsi.PasswordSukses());
-        }
+          res.status(fixvalue.Kode.OK).json(Fungsi.PasswordSukses());
       });
     }
   });
@@ -152,16 +127,12 @@ let ctrlDaftarUser = function(req, res)
 
 let ctrlAmbilProfile = function(req, res)
 {
-	console.log(req.body);
   let Decode = req.body["DataUser"]["Token"];
 
   jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
   {
     if (err)
-    {
-      res.status(fixvalue.Kode.TokenFailed);
-      res.json(Fungsi.TokenVerifikasiGagal());
-    }
+      res.status(fixvalue.Kode.TokenFailed).json(Fungsi.TokenVerifikasiGagal());
     else
     {
       UserModel.modelAmbilProfile(decoded, req, res, function(err, results)
@@ -180,12 +151,22 @@ let ctrlAmbilProfile = function(req, res)
 
 let ctrlUpdateProfile = function(req, res)
 {
-	UserModel.modelUpdateProfile(req, res, function(err)
+	let Decode = req.body["DataProfile"]["Token"];
+
+	jwt.verify(Decode, fixvalue.Server.JWTSecret, function(err, decoded)
 	{
-		if(err)
-			res.status(fixvalue.Kode.Error).json(Fungsi.UpdateProfileGagal());
+		if (err)
+			res.status(fixvalue.Kode.TokenFailed).json(Fungsi.TokenVerifikasiGagal());
 		else
-			res.status(fixvalue.Kode.OK).json(Fungsi.UpdateProfileSukses());
+		{
+			UserModel.modelUpdateProfile(decoded, req, res, function(err)
+			{
+				if(err)
+					res.status(fixvalue.Kode.Error).json(Fungsi.UpdateProfileGagal());
+				else
+					res.status(fixvalue.Kode.OK).json(Fungsi.UpdateProfileSukses());
+			});
+		}
 	});
 };
 module.exports = {postUserLogin : ctrlUserLogin, postUserLogout : ctrlUserLogout, postPassword : ctrlPassword,

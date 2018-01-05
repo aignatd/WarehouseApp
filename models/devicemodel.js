@@ -9,17 +9,17 @@ let Fungsi = require('./../utils/fungsi');
 
 const shouldAbort = (err) =>
 {
-    if (err)
-    {
-        console.error('Error in transaction', err.stack)
-        pgconn.query('ROLLBACK', (err) =>
-        {
-            if (err)
-                console.error('Error rolling back client', err.stack)
-        });
-    }
+	if (err)
+	{
+		console.error('Error in transaction', err.stack)
+		pgconn.query('ROLLBACK', (err) =>
+		{
+			if (err)
+				console.error('Error rolling back client', err.stack)
+		});
+	}
 
-    return !!err;
+	return !!err;
 };
 
 module.exports.modelDataWarehouse =

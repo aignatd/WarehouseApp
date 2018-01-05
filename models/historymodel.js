@@ -11,7 +11,6 @@ let data;
 module.exports.modelHistoryUSer =
   function (req, res, callback)
   {
-    console.log(req.body);
     data = req.body["DataUser"]["UserID"];
     let jenistimbang = req.body["DataProses"]["jenistimbang"];
 
