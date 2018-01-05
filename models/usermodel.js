@@ -122,7 +122,7 @@ module.exports.modelAmbilProfile =
 	function (decoded, req, res, callback)
 	{
 		data = decoded["Token"]["pegawaiid"];
-		strQuery = 'SELECT name, alamat, phone, email, tmplahir, tgllahir, seks FROM m_pegawai WHERE id=' + data;
+		strQuery = 'SELECT name, alamat, phone, email, tmplahir, tgllahir, seks, idxseks FROM m_pegawai WHERE id=' + data;
 		pgconn.query(strQuery, callback);
 	};
 
