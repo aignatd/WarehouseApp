@@ -112,6 +112,20 @@ let ctrlphotobarang = function(req, res)
   });
 };
 
+let ctrlDataTimbang = function(req, res)
+{
+    FormulirModel.modelDataTimbang(req, function(err, result)
+    {
+        if (err || (result === undefined))
+            res.status(fixvalue.Kode.NotSuccess).json(Fungsi.DataTimbangGagal());
+        else
+        if (result.rowCount === 0)
+            res.status(fixvalue.Kode.NotSuccess).json(Fungsi.DataTimbangKosong());
+        else
+            res.status(fixvalue.Kode.OK).json(Fungsi.SettingTimbangSukses(result.rows));
+    });
+};
+
 module.exports = {postPekerjaan : ctrlPekerjaan, postTambah : ctrlTambah, postUpdate : ctrlUpdate,
-                  postBayar : ctrlBayar, postTimbangKecil : ctrlTimbangKecil,
+                  postBayar : ctrlBayar, postTimbangKecil : ctrlTimbangKecil, getDataTimbang : ctrlDataTimbang,
                   postphotobarang : ctrlphotobarang, postTimbangBesar : ctrlTimbangBesar};

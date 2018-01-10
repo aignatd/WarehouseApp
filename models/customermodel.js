@@ -33,7 +33,7 @@ module.exports.modelRequest =
       intIdx++;
     }
 
-    datakey += ', "IDNo")';
+    datakey += ', "PemasokID")';
     dataisi += ', (SELECT \'' + kodeID + '\' || to_char(MAX(id) + 1, \'fm00000\') AS "PemasokID" FROM "m_BusinessPartner"))';
 
     strQuery = 'INSERT INTO "m_BusinessPartner" ' + datakey + ' VALUES' + dataisi;

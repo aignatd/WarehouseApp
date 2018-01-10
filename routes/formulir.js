@@ -22,4 +22,7 @@ router.post('/uploadkecil', formulirctrl.postPekerjaan, formulirctrl.postTimbang
 /* API untuk upload photo barang timbangan - Input data berupa nomor handphone dan device id */
 router.post('/photobarang', formulirctrl.postphotobarang);
 
+/* GET data seluruh timbangan */
+router.get('/datatimbang/:bisnisunitkode', formulirctrl.getDataTimbang);
+
 module.exports = router;

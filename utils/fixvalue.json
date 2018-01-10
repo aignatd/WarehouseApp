@@ -85,7 +85,11 @@
     "UpdateProfileGagal"    : "Update profile gagal",
     "AmbilProfileSukses"    : "Ambil profile sukses",
     "AmbilProfileGagal"     : "Ambil profile gagal",
-    "AmbilProfileKosong"    : "Ambil profile kosong"
+    "AmbilProfileKosong"    : "Ambil profile kosong",
+    "ProductGagal"          : "Data product gagal",
+    "ProductKosong"         : "Data product kosong",
+    "DataPotongGagal"       : "Data potong gagal",
+    "DataPotongKosong"      : "Data potong kosong"
   },
   "Kode" :
   {

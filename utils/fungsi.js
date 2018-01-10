@@ -16,38 +16,38 @@ module.exports =
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginBlokir}};
     return strJSON;
   },
-	LoginSalah	:	function()
-	{
-		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginSalah}};
-		return strJSON;
-	},
-	LoginGagal	:	function()
-	{
-		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginGagal}};
-		return strJSON;
-	},
-	LoginSukses	:	function(hasil, role, product, potongan)
-	{
-		strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strLoginSukses},
-							 "UserResponse"	:	hasil, "RoleResponse" : role, "PotongRsp" : potongan, "ProductRsp"	:	product};
-		return strJSON;
-	},
-	LogoutSalah	:	function()
-	{
-		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLogoutSalah}};
-		return strJSON;
-	},
-	LogoutGagal	:	function()
-	{
-		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLogoutGagal}};
-		return strJSON;
-	},
-	LogoutSukses	:	function()
-	{
-		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strLogoutSukses}};
-		return strJSON;
-	},
-	PasswordGagal	:	function()
+  LoginSalah	:	function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginSalah}};
+	return strJSON;
+  },
+  LoginGagal	:	function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginGagal}};
+	return strJSON;
+  },
+  LoginSukses	:	function(hasil, role, product, potongan)
+  {
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strLoginSukses},
+				 "UserResponse"	:	hasil, "RoleResponse" : role, "PotongRsp" : potongan, "ProductRsp"	:	product};
+	return strJSON;
+  },
+  LogoutSalah	:	function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLogoutSalah}};
+    return strJSON;
+  },
+  LogoutGagal	:	function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLogoutGagal}};
+	return strJSON;
+  },
+  LogoutSukses	:	function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strLogoutSukses}};
+	return strJSON;
+  },
+  PasswordGagal	:	function()
   {
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strPasswordGagal},
       "UserResponse"	:	{}};
@@ -324,6 +324,32 @@ module.exports =
   AmbilProfileKosong  : function()
   {
     strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.AmbilProfileKosong}};
+    return strJSON;
+  },
+  SettingTimbangSukses	: function(result)
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.DataTimbangSukses},
+               "SetTimbangRsp"	:	result};
+    return strJSON;
+  },
+  ProductKosong  : function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.ProductKosong}};
+    return strJSON;
+  },
+  ProductGagal  : function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.ProductGagal}};
+    return strJSON;
+  },
+  DataPotongKosong  : function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DataPotongKosong}};
+    return strJSON;
+  },
+  DataPotongGagal  : function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DataPotongGagal}};
     return strJSON;
   }
 };

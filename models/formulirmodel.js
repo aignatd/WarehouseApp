@@ -194,3 +194,11 @@ module.exports.modelTimbangBesar =
       }
     });
   };
+
+module.exports.modelDataTimbang =
+    function (req, callback)
+    {
+        strQuery = 'SELECT id, nama, jenis, url, nourut, ip, port FROM m_timbangan ' +
+                   'WHERE bisnisunitkode=\'' + req.params.bisnisunitkode + '\'';
+        pgconn.query(strQuery, callback);
+    };

@@ -85,11 +85,11 @@ var ctrlProduct = function(req, res, next)
   CustomerModel.modelProduct(req.body["Hasil"]["kodewarehouse"], res, function(err, result)
   {
     if (err)
-      res.status(fixvalue.Kode.Error).json(Fungsi.LoginGagal());
+      res.status(fixvalue.Kode.Error).json(Fungsi.ProductGagal());
     else
     {
       if (result["rowCount"] === 0)
-        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.LoginSalah());
+        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.ProductKosong());
       else
       {
         req.body["Product"] = result.rows;
@@ -105,11 +105,11 @@ var ctrlPotongan = function(req, res)
   CustomerModel.modelPotongan(req, res, function(err, result)
   {
     if (err)
-      res.status(fixvalue.Kode.Error).json(Fungsi.LoginGagal());
+      res.status(fixvalue.Kode.Error).json(Fungsi.DataPotongGagal());
     else
     {
       if (result["rowCount"] === 0)
-        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.LoginSalah());
+        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.DataPotongKosong());
       else
       {
         console.log("Potongan selesai");
