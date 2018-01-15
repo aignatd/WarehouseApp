@@ -53,7 +53,7 @@ let ctrlTambah = function(req, res)
     if((err) || (result.rowCount === 0))
       res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
     else
-      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses());
+      res.status(fixvalue.Kode.OK).json(Fungsi.TambahTimbangSukses());
   });
 };
 
@@ -86,7 +86,10 @@ let ctrlTimbangKecil = function(req, res)
     if(err || (result.rowCount === 0) || (result === undefined))
       res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
     else
-      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses());
+    {
+      let hasil = {"pemasokid" : req.body["DataFormulir"]["pemasokid"], "pekerjaanid" : req.body["DataFormulir"]["pekerjaanid"]};
+      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses(hasil));
+    }
   });
 };
 
@@ -97,7 +100,10 @@ let ctrlTimbangBesar = function(req, res)
     if (err || (result.rowCount === 0) || (result === undefined))
       res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
     else
-      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses());
+    {
+      let hasil = {"pemasokid" : req.body["DataFormulir"]["pemasokid"], "pekerjaanid" : req.body["DataFormulir"]["pekerjaanid"]};
+      res.status(fixvalue.Kode.OK).json(Fungsi.UploadTimbangSukses(hasil));
+    }
   });
 };
 

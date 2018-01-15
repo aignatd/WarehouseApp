@@ -124,6 +124,7 @@ module.exports.modelTimbangKecil =
       else
       {
         let datatimbang = req.body["DataTimbangan"];
+        req.body["DataFormulir"]["pekerjaanid"] = resquery.rows[0]["id"];
 
         for (let i=0; i<datatimbang.length; i++)
         {
@@ -182,6 +183,7 @@ module.exports.modelTimbangBesar =
         datakey += ', "pekerjaanid")';
         dataisi += ', ' + resquery.rows[0]["id"] + ')';
 
+        req.body["DataFormulir"]["pekerjaanid"] = resquery.rows[0]["id"];
         strQuery = 'INSERT INTO "timbangan" ' + datakey + ' VALUES ' + dataisi;
 
         pgconn.query(strQuery, (err, restimbang) =>
@@ -198,7 +200,7 @@ module.exports.modelTimbangBesar =
 module.exports.modelDataTimbang =
     function (req, callback)
     {
-        strQuery = 'SELECT id, nama, jenis, url, nourut, ip, port FROM m_timbangan ' +
+        strQuery = 'SELECT id, nama, jenis, url, nourut, ip, port, bisnisunitkode FROM m_timbangan ' +
                    'WHERE bisnisunitkode=\'' + req.params.bisnisunitkode + '\'';
         pgconn.query(strQuery, callback);
     };

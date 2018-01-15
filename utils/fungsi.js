@@ -100,9 +100,15 @@ module.exports =
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strTimbanganGagal}};
     return strJSON;
   },
-  UploadTimbangSukses	:	function()
+  UploadTimbangSukses :	function(hasil)
   {
-    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strTimbanganSukses}};
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strTimbanganSukses},
+              "PrinterRsp"	:	hasil};
+      return strJSON;
+  },
+  TambahTimbangSukses :	function()
+  {
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strTimbanganSukses}};
     return strJSON;
   },
   synchronizeGagal	:	function()
