@@ -31,6 +31,8 @@ module.exports.modelPekerjaan =
     let intIdx = 0;
     let datakey = '(';
     let dataisi = '(';
+    let pemasokid = '';
+    let kode = '';
 
     for (let keypekerjaan in data)
     {
@@ -40,13 +42,16 @@ module.exports.modelPekerjaan =
         dataisi += ',';
       }
 
+      if(keypekerjaan === 'pemasokid')
+        pemasokid = data[keypekerjaan];
+
+      if(keypekerjaan === 'bisnisunitkode')
+        kode = data[keypekerjaan];
+
       datakey += '"' + keypekerjaan + '"';
       dataisi += "'" + data[keypekerjaan] + "'";
       intIdx++;
     }
-
-    datakey += ', tglbuat)';
-    dataisi += ', current_timestamp)';
 
     pgconn.query('BEGIN', (err) =>
     {
@@ -54,14 +59,37 @@ module.exports.modelPekerjaan =
         res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
       else
       {
-        strQuery = 'INSERT INTO "pekerjaan" ' + datakey + ' VALUES' + dataisi;
+        strQuery = 'SELECT id FROM "m_BusinessPartner" WHERE "PemasokID"=\'' + pemasokid + '\'';
 
-        pgconn.query(strQuery, (err, respekerjaan) =>
+        pgconn.query(strQuery, (err, respartner) =>
         {
-          if (shouldAbort(err) || (respekerjaan.rowCount === 0) || (respekerjaan === undefined))
+          if (shouldAbort(err) || (respartner.rowCount === 0) || (respartner === undefined))
             res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
           else
-            pgconn.query('COMMIT', callback);
+          {
+            strQuery = 'SELECT id FROM "m_BusinessUnit" WHERE "Kode"=\'' + kode + '\'';
+
+            pgconn.query(strQuery, (err, resquery) =>
+            {
+              if (shouldAbort(err) || (resquery.rowCount === 0) || (resquery === undefined))
+                res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
+              else
+              {
+                datakey += ', tglbuat, "IDPemasok", kodebisnisunit)';
+                dataisi += ', current_timestamp,' + respartner.rows[0]["id"] + ',' + resquery.rows[0]["id"] + ')';
+
+                strQuery = 'INSERT INTO "pekerjaan" ' + datakey + ' VALUES' + dataisi;
+
+                pgconn.query(strQuery, (err, respekerjaan) =>
+                {
+                  if (shouldAbort(err) || (respekerjaan.rowCount === 0) || (respekerjaan === undefined))
+                    res.status(fixvalue.Kode.NotSuccess).json(Fungsi.UploadTimbangGagal());
+                  else
+                    pgconn.query('COMMIT', callback);
+                });
+              }
+            });
+          }
         });
       }
     });
