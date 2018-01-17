@@ -8,6 +8,21 @@ let pgconn = require('./../utils/PGConn');
 let strQuery;
 let data;
 
+const shouldAbort = (err) =>
+{
+    if (err)
+    {
+        console.error('Error in transaction', err.stack)
+        pgconn.query('ROLLBACK', (err) =>
+        {
+            if (err)
+                console.error('Error rolling back client', err.stack)
+        });
+    }
+
+    return !!err;
+};
+
 module.exports.modelsynchronize =
   function (req, res, callback)
   {
@@ -61,9 +76,26 @@ module.exports.modelpotongan =
     let nourut = data["nourut"];
 //        var jum = (data["harga"] * potongan) / 100;
 
-    strQuery = 'UPDATE timbangan SET productcode=\'' + product + '\', potongan=' + potongan + ', jenispotongid=' + jenipotong + ' WHERE id=' + id +  ' AND nourut=' + nourut;
+    strQuery = 'SELECT mproductpk FROM mproduct WHERE "productcode"=\'' + product + '\'';
 
-    pgconn.query(strQuery, callback);
+    pgconn.query(strQuery, (err, resquery) =>
+    {
+      if (shouldAbort(err) || (resquery.rowCount === 0) || (resquery === undefined))
+        res.status(FixValue.Kode.NotSuccess).json(Fungsi.PotonganGagal());
+      else
+      {
+        strQuery = 'UPDATE timbangan SET productcode=\'' + product + '\', potongan=' + potongan + ', jenispotongid=' +
+            jenipotong + ', codeproduct=\'' + resquery.rows[0]["mproductpk"] + '\' WHERE id=' + id +  ' AND nourut=' + nourut;
+
+        pgconn.query(strQuery, (err, respotongan) =>
+        {
+          if (shouldAbort(err) || (respotongan.rowCount === 0) || (respotongan === undefined))
+            res.status(FixValue.Kode.NotSuccess).json(Fungsi.PotonganGagal());
+          else
+            pgconn.query('COMMIT', callback);
+        });
+      }
+    });
   };
 
 module.exports.modelupdateqc =
