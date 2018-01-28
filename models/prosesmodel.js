@@ -4,6 +4,7 @@
 let Fungsi    = require('./../utils/fungsi');
 let FixValue  = require('./../utils/fixvalue.json');
 let pgconn = require('./../utils/PGConn');
+let strso = require('string-occurrence');
 
 let strQuery;
 let data;
@@ -23,27 +24,92 @@ const shouldAbort = (err) =>
     return !!err;
 };
 
+function aContainsB (a, b)
+{
+	return strso(a, b)>0;
+}
+
 module.exports.modelsynchronize =
   function (req, res, callback)
   {
-    data = req.body["DataProses"];
-    let permintaan = data["Permintaan"];
-    let pekerjaan = data["Pekerjaan"];
-    let jenistimbang = data["jenistimbang"];
-    let UserID = data["userid"];
-    let pilihan;
+	  data = req.body["DataProses"];
+	  let UserID = data["userid"];
 
-    if(permintaan === 0 && pekerjaan === 0)
-      pilihan = 'a.permintaan>=0 AND a.pekerjaan>=0 AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
-    else
-      pilihan = 'a.permintaan=' + data["Permintaan"] + ' AND a.pekerjaan=' + data["Pekerjaan"] +
-                ' AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+	  strQuery = 'SELECT b.roleid FROM users a LEFT JOIN m_pegawai b ON a.pegawaiid=b."id" WHERE a."id"=' + UserID;
 
-    strQuery = 'SELECT a.id, a.pemasokid, a.nopolisi, a.jumlahtimbang, a.permintaan, a.pekerjaan, a.jenistimbang, b.panggilan, b.perusahaan, b.telpon, b."Alamat" ' +
-      'FROM pekerjaan as a, "m_BusinessPartner" as b WHERE a.pemasokid=b."PemasokID" AND a.tglbuat>=\'' + data["TglRequest"] + '\' AND ' +
-      'bisnisunitkode=\'' + data["BisnisUnit"] + '\' AND userid=' + UserID + ' AND ' + pilihan;
+    pgconn.query(strQuery, (err, resquery) =>
+    {
+      if (shouldAbort(err) || (resquery === undefined))
+        res.status(FixValue.Kode.NotSuccess).json(Fungsi.synchronizeGagal());
+      else
+      if (resquery.rowCount === 0)
+	      res.status(FixValue.Kode.NotSuccess).json(Fungsi.synchronizeKosong());
+      else
+      {
+      	let strRole = resquery.rows[0]["roleid"];
+      	let intRole;
 
-    pgconn.query(strQuery, callback);
+      	if(aContainsB(strRole, '1') || aContainsB(strRole, '4') || aContainsB(strRole, '9'))
+      		intRole = 0;
+      	else
+	      if(aContainsB(strRole, '6'))
+		      intRole = 1;
+	      else
+	      if(aContainsB(strRole, '8'))
+		      intRole = 2;
+      	else
+      		intRole = -1;
+
+      	if(intRole === -1)
+		      res.status(FixValue.Kode.NotSuccess).json(Fungsi.synchronizeKosong());
+      	else
+	      {
+		      let permintaan = data["Permintaan"];
+		      let pekerjaan = data["Pekerjaan"];
+		      let jenistimbang = data["jenistimbang"];
+		      let pilihan = '';
+
+		      if((permintaan === 0) && (pekerjaan === 0) && (intRole === 0))
+			      pilihan = 'a.permintaan>=0 AND a.pekerjaan>=0 AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+		      else
+		      if((permintaan === 0) && (pekerjaan === 0) && (intRole === 1))
+			      pilihan = 'a.permintaan=2 AND a.pekerjaan=1 AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+		      else
+		      if((permintaan === 0) && (pekerjaan === 0) && (intRole === 2))
+			      pilihan = 'a.permintaan=1 AND a.pekerjaan=2 AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+		      else
+		      if((permintaan === 1) && (pekerjaan === 2) && (intRole === 1))
+		      	pilihan = '';
+		      else
+		      if((permintaan === 2) && (pekerjaan === 1) && (intRole === 2))
+			      pilihan = '';
+		      else
+		      {
+		      	if(intRole === 0)
+				      pilihan = 'a.permintaan=' + data["Permintaan"] + ' AND a.pekerjaan=' + data["Pekerjaan"] +
+					      ' AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+		      	else
+			      if(intRole === 1)
+				      pilihan = 'a.permintaan=2 AND a.pekerjaan=1 AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+			      if(intRole === 2)
+				      pilihan = 'a.permintaan=1 AND a.pekerjaan=2 AND a.jenistimbang=' + jenistimbang + ' ORDER BY a.id ASC';
+			      else
+			      	pilihan = '';
+		      }
+
+		      if(pilihan === '')
+			      res.status(FixValue.Kode.NotSuccess).json(Fungsi.synchronizeKosong());
+					else
+		      {
+			      strQuery = 'SELECT a.id, a.pemasokid, a.nopolisi, a.jumlahtimbang, a.permintaan, a.pekerjaan, a.jenistimbang, b.panggilan, b.perusahaan, b.telpon, b."Alamat" ' +
+				      'FROM pekerjaan as a, "m_BusinessPartner" as b WHERE a.pemasokid=b."PemasokID" AND a.tglbuat>=\'' + data["TglRequest"] + '\' AND ' +
+				      'bisnisunitkode=\'' + data["BisnisUnit"] + '\' AND ' + pilihan;
+
+			      pgconn.query(strQuery, callback);
+		      }
+	      }
+      }
+    });
   };
 
 module.exports.modeltimbang =

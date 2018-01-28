@@ -124,8 +124,7 @@ module.exports =
   },
   synchronizeKosong	:	function()
   {
-    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Empty, "Pesan"	:	strPesan.synchronizeKosong},
-      "UserResponse"	:	{"Profile" : strPesan.strDataProfile}};
+    strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Empty, "Pesan"	:	strPesan.synchronizeKosong}};
     return strJSON;
   },
   TimbangSukses	:	function(result)
