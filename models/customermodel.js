@@ -68,11 +68,11 @@ module.exports.modelProduct =
   function (product, res, callback)
   {
     /*
-            strQuery = 'SELECT mproductpk, productcode, productname, c.harga FROM mproduct a, "m_BusinessUnit" b, ' +
+            strQuery = 'SELECT mpro ductpk, productcode, productname, c.harga FROM mproduct a, "m_BusinessUnit" b, ' +
                        'unitprice c WHERE c.productid=a.mproductpk AND c.unitid=b.id AND b."Kode"=\'' + data + '\'';
     */
 
-    strQuery = 'SELECT mproductpk, a.productcode, productname, c.price FROM mproduct a, "m_BusinessUnit" b, ' +
+    strQuery = 'SELECT mproductpk, a.productcode, productname, c.id unitpriceid, c.price FROM mproduct a, "m_BusinessUnit" b, ' +
       'unitprice c WHERE c.productcode=a.productcode AND c.unitcode=b."Kode" AND b."Kode"=\'' + product + '\'';
 
     pgconn.query(strQuery, callback);

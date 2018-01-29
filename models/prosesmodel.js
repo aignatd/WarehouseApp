@@ -137,6 +137,7 @@ module.exports.modelpotongan =
     data = req.body["DataTimbangan"];
     let potongan = data["potongan"];
     let product = data["productcode"];
+	  let unitpriceid = data["unitpriceid"];
     let jenipotong = data["jenispotongid"];
     let id = data["id"];
     let nourut = data["nourut"];
@@ -151,7 +152,8 @@ module.exports.modelpotongan =
       else
       {
         strQuery = 'UPDATE timbangan SET productcode=\'' + product + '\', potongan=' + potongan + ', jenispotongid=' +
-            jenipotong + ', codeproduct=\'' + resquery.rows[0]["mproductpk"] + '\' WHERE id=' + id +  ' AND nourut=' + nourut;
+                   jenipotong + ', codeproduct=' + resquery.rows[0]["mproductpk"] + ', unitpriceid=' + unitpriceid +
+	                 ' WHERE id=' + id +  ' AND nourut=' + nourut;
 
         pgconn.query(strQuery, (err, respotongan) =>
         {

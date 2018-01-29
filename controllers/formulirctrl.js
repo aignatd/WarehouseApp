@@ -47,7 +47,6 @@ let ctrlPekerjaan = function(req, res, next)
 
 let ctrlTambah = function(req, res)
 {
-  console.log(req.body);
   FormulirModel.modelTambah(req, res, function(err, result)
   {
     if((err) || (result.rowCount === 0))
