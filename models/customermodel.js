@@ -67,13 +67,24 @@ module.exports.modelPotongan =
 module.exports.modelProduct =
   function (product, res, callback)
   {
-    /*
-            strQuery = 'SELECT mpro ductpk, productcode, productname, c.harga FROM mproduct a, "m_BusinessUnit" b, ' +
-                       'unitprice c WHERE c.productid=a.mproductpk AND c.unitid=b.id AND b."Kode"=\'' + data + '\'';
-    */
-
-    strQuery = 'SELECT mproductpk, a.productcode, productname, c.id unitpriceid, c.price FROM mproduct a, "m_BusinessUnit" b, ' +
+/*  	
+    strQuery = 'SELECT a.mproductpk, a.productcode, a.productname, c.id unitpriceid, c.price FROM mproduct a, "m_BusinessUnit" b, ' +
       'unitprice c WHERE c.productcode=a.productcode AND c.unitcode=b."Kode" AND b."Kode"=\'' + product + '\'';
+*/
 
+		strQuery = 'SELECT c.productid mproductpk, c.productcode,\n' +
+			'\tc.productname, c.id unitpriceid,\n' +
+			'\tc.price FROM "m_BusinessUnit" b,\n' +
+			'\tunitprice c WHERE\n' +
+			'\tc.unitcode = b."Kode"\n' +
+			'\tAND b."Kode"=\'' + product + '\'';
+		
     pgconn.query(strQuery, callback);
   };
+
+module.exports.modelJualan =
+	function (callback)
+	{
+		strQuery = 'SELECT productcode, productname, mproductpk FROM mproduct';
+		pgconn.query(strQuery, callback);
+	};

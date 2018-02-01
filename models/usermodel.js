@@ -37,7 +37,6 @@ module.exports.modelUserLogin =
       '(SELECT e."Kode" FROM m_device as d, "m_BusinessUnit" as e WHERE d.businessunit=e."id" AND d.deviceid=\'' +
       device + '\')';
 
-    console.log(strQuery);
     pgconn.query(strQuery, callback);
   };
 

@@ -89,7 +89,9 @@
     "ProductGagal"          : "Data product gagal",
     "ProductKosong"         : "Data product kosong",
     "DataPotongGagal"       : "Data potong gagal",
-    "DataPotongKosong"      : "Data potong kosong"
+    "DataPotongKosong"      : "Data potong kosong",
+    "ProductJualanGagal"    : "Data penjualan gagal",
+    "ProductJualanKosong"   : "Data penjualan kosong"
   },
   "Kode" :
   {

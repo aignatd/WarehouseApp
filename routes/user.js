@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* API for user login */
-router.post('/login', userctrl.postUserLogin, userctrl.postRole, customerctrl.postProduct, customerctrl.postPotongan);
+router.post('/login', userctrl.postUserLogin, userctrl.postRole, customerctrl.postJualan, customerctrl.postProduct, customerctrl.postPotongan);
 
 /* API for user logout */
 router.post('/logout', userctrl.postUserLogout);

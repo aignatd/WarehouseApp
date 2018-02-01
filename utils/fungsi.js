@@ -26,10 +26,11 @@ module.exports =
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strLoginGagal}};
 	return strJSON;
   },
-  LoginSukses	:	function(hasil, role, product, potongan)
+  LoginSukses	:	function(hasil, role, Jualan, product, potongan)
   {
     strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strLoginSukses},
-				 "UserResponse"	:	hasil, "RoleResponse" : role, "PotongRsp" : potongan, "ProductRsp"	:	product};
+				       "UserResponse"	:	hasil, "RoleResponse" : role, "PotongRsp" : potongan, "JualanRsp"	:	Jualan,
+	             "ProductRsp"	:	product};
 	return strJSON;
   },
   LogoutSalah	:	function()
@@ -347,6 +348,16 @@ module.exports =
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.ProductGagal}};
     return strJSON;
   },
+	ProductJualanKosong  : function()
+	{
+		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.ProductKosong}};
+		return strJSON;
+	},
+	ProductJualanGagal  : function()
+	{
+		strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.ProductGagal}};
+		return strJSON;
+	},
   DataPotongKosong  : function()
   {
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DataPotongKosong}};

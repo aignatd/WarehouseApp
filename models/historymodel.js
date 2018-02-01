@@ -18,14 +18,15 @@ module.exports.modelHistoryUSer =
       "\tCASE\n" +
       "\t\tWHEN permintaan=-1 AND pekerjaan=-1 THEN 'Kasir'\n" +
       "\t\tWHEN permintaan=-1 AND pekerjaan=-2 THEN 'Lunas'\n" +
+      "\t\tWHEN permintaan=-2 AND pekerjaan=-1 THEN 'Jual'\n" +
       "\t\tELSE 'other'\n" +
       "\tEND AS status\n" +
       "FROM\n" +
       "\tpekerjaan a\n" +
       "WHERE\n" +
       "\tuserid=" + data + " AND jenistimbang=" + jenistimbang +
-      " AND ((permintaan=-1 AND pekerjaan=-1) OR (permintaan=-1 AND pekerjaan=-2)) ORDER BY ID ASC";
-
+      " AND ((permintaan=-1 AND pekerjaan=-1) OR (permintaan=-1 AND pekerjaan=-2) OR (permintaan=-2 AND pekerjaan=-1)) ORDER BY ID ASC";
+      
     pgconn.query(strQuery, callback);
   };
 

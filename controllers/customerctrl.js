@@ -100,6 +100,26 @@ var ctrlProduct = function(req, res, next)
   });
 };
 
+var ctrlJualan = function(req, res, next)
+{
+	CustomerModel.modelJualan(function(err, result)
+	{
+		if (err)
+			res.status(fixvalue.Kode.Error).json(Fungsi.ProductJualanGagal());
+		else
+		{
+			if (result["rowCount"] === 0)
+				res.status(fixvalue.Kode.NotSuccess).json(Fungsi.ProductJualanKosong());
+			else
+			{
+				req.body["Jualan"] = result.rows;
+				console.log("Jualan selesai");
+				return next();
+			}
+		}
+	});
+};
+
 var ctrlPotongan = function(req, res)
 {
   CustomerModel.modelPotongan(req, res, function(err, result)
@@ -113,7 +133,8 @@ var ctrlPotongan = function(req, res)
       else
       {
         console.log("Potongan selesai");
-        res.status(fixvalue.Kode.OK).json(Fungsi.LoginSukses(req.body["Hasil"], req.body["Role"], req.body["Product"], result.rows));
+        res.status(fixvalue.Kode.OK).json(Fungsi.LoginSukses(req.body["Hasil"], req.body["Role"],
+                   req.body["Jualan"], req.body["Product"], result.rows));
       }
     }
   });
@@ -136,4 +157,5 @@ var ctrlDataProduct = function(req, res)
 };
 
 module.exports = {postRequest : ctrlRequest, postInfoPemasok : ctrlInfoPemasok, postVehicle : ctrlVehicle,
-                  postProduct : ctrlProduct, postPotongan : ctrlPotongan, postDataProduct : ctrlDataProduct};
+                  postProduct : ctrlProduct, postPotongan : ctrlPotongan, postDataProduct : ctrlDataProduct,
+                  postJualan : ctrlJualan};

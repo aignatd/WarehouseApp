@@ -182,14 +182,15 @@ module.exports.modelupdateqc =
 module.exports.modelnetto =
   function (req, res, callback)
   {
-    console.log(req.body);
-    data = req.body["DataTimbangan"];
-    let netto = data["tonasenetto"];
+    data = req.body["DataTimbangan"];    
     let id = data["id"];
     let nourut = data["nourut"];
 //        var jum = (data["harga"] * potongan) / 100;
 
-    strQuery = 'UPDATE timbangan SET tonasenetto=' + netto + ' WHERE id=' + id +  ' AND nourut=' + nourut;
+    if(req.body["DataFormulir"]["jenistimbang"] === 3)    
+	    strQuery = 'UPDATE timbangan SET tonasebruto=' + data["tonasebruto"] + ' WHERE id=' + id +  ' AND nourut=' + nourut;
+    else
+	    strQuery = 'UPDATE timbangan SET tonasenetto=' + data["tonasenetto"] + ' WHERE id=' + id +  ' AND nourut=' + nourut;
 
     pgconn.query(strQuery, callback);
   };
@@ -222,10 +223,19 @@ module.exports.modelTimbangBaru =
     data = req.body["DataTimbangan"];
     data["pekerjaanid"] = formulir["id"];
     data["nourut"] = data["nourut"] + 1;
-    data["tonasebruto"] = data["tonasenetto"];
-
+    
+    if(req.body["DataFormulir"]["jenistimbang"] === 3)
+    {
+	    data["tonasenetto"] = data["tonasebruto"];
+  	  delete data["tonasebruto"];
+    }
+		else
+		{
+	    data["tonasebruto"] = data["tonasenetto"];
+  	  delete data["tonasenetto"];
+		}
+    
     delete data["id"];
-    delete data["tonasenetto"];
     delete data["proses"];
 
     let intIdx = 0;

@@ -161,7 +161,8 @@ module.exports.modelTimbangKecil =
 
         strQuery = 'INSERT INTO timbangan SELECT * FROM json_to_recordset (\'' + JSON.stringify(datatimbang) +
           '\') as x("nourut" int, "tonasebruto" int, "tanggal" text, "pekerjaanid" int, "productcode" text, ' +
-          '"potongan" int, "harga" INT, "jumlahpotongan" INT, "tonasenetto" int, "jenispotongid" int, "codeproduct" int)';
+          '"potongan" int, "harga" INT, "jumlahpotongan" INT, "tonasenetto" int, "jenispotongid" int, ' +
+          '"codeproduct" int, "unitpriceid" int)';
 
         pgconn.query(strQuery, (err, restimbang) =>
         {
