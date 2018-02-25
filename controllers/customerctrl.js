@@ -2,55 +2,40 @@
  * Created by ignat on 03-Jan-17.
  */
 
-var CustomerModel = require('./../models/customermodel');
-var Fungsi = require('./../utils/fungsi');
-var jwt = require("jsonwebtoken");
-var fixvalue = require('./../utils/fixvalue.json');
+let CustomerModel = require('./../models/customermodel');
+let Fungsi = require('./../utils/fungsi');
+let jwt = require("jsonwebtoken");
+let fixvalue = require('./../utils/fixvalue.json');
 
-var customer;
-var vehicle;
+let customer;
+let vehicle;
 
-var ctrlRequest = function(req, res)
+let ctrlRequest = function(req, res)
 {
   CustomerModel.modelRequest(req, res, function(err, result)
   {
     if(err)
-    {
-      res.status(fixvalue.Kode.Error);
-      res.json(Fungsi.KartuBaruGagal());
-    }
+      res.status(fixvalue.Kode.Error).json(Fungsi.KartuBaruGagal());
     else
     {
       if(result["rowCount"] === 0)
-      {
-        res.status(fixvalue.Kode.NotSuccess);
-        res.json(Fungsi.KartuBaruSalah());
-      }
+        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.KartuBaruSalah());
       else
-      {
-        res.status(fixvalue.Kode.OK);
-        res.json(Fungsi.KartuBaruSukses());
-      }
+        res.status(fixvalue.Kode.OK).json(Fungsi.KartuBaruSukses(result[1].rows[0]["PemasokID"]));
     }
   });
 };
 
-var ctrlInfoPemasok = function(req, res, next)
+let ctrlInfoPemasok = function(req, res, next)
 {
   CustomerModel.modelInfoPemasok(req, res, function(err, result)
   {
     if (err)
-    {
-      res.status(fixvalue.Kode.Error);
-      res.json(Fungsi.RequestGagal());
-    }
+      res.status(fixvalue.Kode.Error).json(Fungsi.RequestGagal());
     else
     {
       if (result["rowCount"] === 0)
-      {
-        res.status(fixvalue.Kode.NotSuccess);
-        res.json(Fungsi.RequestSalah());
-      }
+        res.status(fixvalue.Kode.NotSuccess).json(Fungsi.RequestSalah());
       else
       {
         req.body["CustomerRsp"] = result.rows[0];
@@ -60,7 +45,7 @@ var ctrlInfoPemasok = function(req, res, next)
   });
 };
 
-var ctrlVehicle = function(req, res)
+let ctrlVehicle = function(req, res)
 {
   CustomerModel.modelVehicle(req, res, function(err, result)
   {
@@ -80,7 +65,7 @@ var ctrlVehicle = function(req, res)
   });
 };
 
-var ctrlProduct = function(req, res, next)
+let ctrlProduct = function(req, res, next)
 {
   CustomerModel.modelProduct(req.body["Hasil"]["kodewarehouse"], res, function(err, result)
   {
@@ -100,7 +85,7 @@ var ctrlProduct = function(req, res, next)
   });
 };
 
-var ctrlJualan = function(req, res, next)
+let ctrlJualan = function(req, res, next)
 {
 	CustomerModel.modelJualan(function(err, result)
 	{
@@ -120,7 +105,7 @@ var ctrlJualan = function(req, res, next)
 	});
 };
 
-var ctrlPotongan = function(req, res)
+let ctrlPotongan = function(req, res)
 {
   CustomerModel.modelPotongan(req, res, function(err, result)
   {
@@ -140,7 +125,7 @@ var ctrlPotongan = function(req, res)
   });
 };
 
-var ctrlDataProduct = function(req, res)
+let ctrlDataProduct = function(req, res)
 {
   CustomerModel.modelProduct(req.body["DataFormulir"]["bisnisunitkode"], res, function(err, result)
   {

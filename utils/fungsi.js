@@ -75,9 +75,9 @@ module.exports =
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strKartuSalah}};
     return strJSON;
   },
-  KartuBaruSukses	:	function()
+  KartuBaruSukses	:	function(result)
   {
-    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strKartuSukses}};
+    strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strKartuSukses + result}};
     return strJSON;
   },
   RequestGagal	:	function()

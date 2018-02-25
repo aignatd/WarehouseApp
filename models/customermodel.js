@@ -1,7 +1,6 @@
 /**
  * Created by ignat on 03-Jan-17.
  */
-let Fungsi    = require('./../utils/fungsi');
 const pgconn = require('./../utils/PGConn');
 
 let strQuery;
@@ -11,33 +10,96 @@ module.exports.modelRequest =
   function (req, res, callback)
   {
     data = req.body["DataCustomer"];
+    let nopolisi = data["nopolisi"];
+    let cp = data["ContactPerson"];
 
-    var kodeID = data["kodewarehouse"] + data["Jenis"];
-    delete data["Token"];
-    delete data["kodewarehouse"];
+    delete data["nopolisi"];
 
-    var intIdx = 0;
-    var datakey = '(';
-    var dataisi = '(';
+	  let kodeID = data["kodewarehouse"] + data["Jenis"];
+	  delete data["Token"];
+	  delete data["kodewarehouse"];
 
-    for (var key in data)
+	  let intIdx = 0;
+	  let datakey = '(';
+	  let dataisi = '(';
+
+    if(nopolisi === "")
     {
-      if(intIdx > 0)
-      {
-        datakey += ',';
-        dataisi += ',';
-      }
+	    data["vehicle"] = "1";
 
-      datakey += '"' + key + '"';
-      dataisi += "'" + data[key] + "'";
-      intIdx++;
+	    intIdx = 0;
+	    datakey = '(';
+	    dataisi = '(';
+
+	    for (let key in data)
+	    {
+		    if(intIdx > 0)
+		    {
+			    datakey += ',';
+			    dataisi += ',';
+		    }
+
+		    datakey += '"' + key + '"';
+		    dataisi += "'" + data[key] + "'";
+		    intIdx++;
+	    }
+
+	    datakey += ', "PemasokID")';
+	    dataisi += ', (SELECT \'' + kodeID + '\' || to_char(MAX(id) + 1, \'fm00000\') AS "PemasokID" FROM "m_BusinessPartner"))';
+
+	    strQuery = 'INSERT INTO "m_BusinessPartner" ' + datakey + ' VALUES' + dataisi +
+		    ' ON CONFLICT ("ContactPerson") WHERE "ContactPerson"=\'' + cp + '\' DO UPDATE SET "ContactPerson"=\'' + cp + '\';\n' +
+		    'SELECT "PemasokID" FROM "m_BusinessPartner" WHERE "ContactPerson"=\'' + cp + '\'';
+
+	    pgconn.query(strQuery, callback);
     }
+    else
+    {
+    	strQuery = 'INSERT INTO m_vehicle (nopolisi) values (\'' + nopolisi + '\')\n' +
+		    'ON CONFLICT (nopolisi) WHERE nopolisi=\'' + nopolisi + '\' DO UPDATE SET nopolisi=\'' + nopolisi + '\';\n' +
+		    'SELECT id FROM m_vehicle WHERE nopolisi=\'' + nopolisi + '\'';
 
-    datakey += ', "PemasokID")';
-    dataisi += ', (SELECT \'' + kodeID + '\' || to_char(MAX(id) + 1, \'fm00000\') AS "PemasokID" FROM "m_BusinessPartner"))';
+	    pgconn.query(strQuery, function(err, hasil)
+	    {
+	    	if(err)
+			    data["vehicle"] = "1";
+	    	else
+		    {
+		    	let isiID = hasil[1].rows[0]["id"];
 
-    strQuery = 'INSERT INTO "m_BusinessPartner" ' + datakey + ' VALUES' + dataisi;
-    pgconn.query(strQuery, callback);
+		    	if(isiID === "")
+				    data["vehicle"] = "1";
+		    	else
+				    data["vehicle"] = isiID;
+		    }
+
+		    intIdx = 0;
+		    datakey = '(';
+		    dataisi = '(';
+
+		    for (let key in data)
+		    {
+			    if(intIdx > 0)
+			    {
+				    datakey += ',';
+				    dataisi += ',';
+			    }
+
+			    datakey += '"' + key + '"';
+			    dataisi += "'" + data[key] + "'";
+			    intIdx++;
+		    }
+
+		    datakey += ', "PemasokID")';
+		    dataisi += ', (SELECT \'' + kodeID + '\' || to_char(MAX(id) + 1, \'fm00000\') AS "PemasokID" FROM "m_BusinessPartner"))';
+
+		    strQuery = 'INSERT INTO "m_BusinessPartner" ' + datakey + ' VALUES' + dataisi +
+			    ' ON CONFLICT ("ContactPerson") WHERE "ContactPerson"=\'' + cp + '\' DO UPDATE SET "ContactPerson"=\'' + cp + '\';\n' +
+			    'SELECT "PemasokID" FROM "m_BusinessPartner" WHERE "ContactPerson"=\'' + cp + '\'';
+
+		    pgconn.query(strQuery, callback);
+	    });
+    }
   };
 
 module.exports.modelInfoPemasok =
