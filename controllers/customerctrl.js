@@ -141,6 +141,17 @@ let ctrlDataProduct = function(req, res)
   });
 };
 
+let ctrlDataArmada = function(req, res)
+{
+	CustomerModel.modelDataArmada(req, res, function(err, result)
+	{
+		if (err)
+			res.status(fixvalue.Kode.Error).json(Fungsi.DataArmadaGagal());
+		else
+		  res.status(fixvalue.Kode.OK).json(Fungsi.DataArmadaSukses());
+	});
+};
+
 module.exports = {postRequest : ctrlRequest, postInfoPemasok : ctrlInfoPemasok, postVehicle : ctrlVehicle,
                   postProduct : ctrlProduct, postPotongan : ctrlPotongan, postDataProduct : ctrlDataProduct,
-                  postJualan : ctrlJualan};
+                  postJualan : ctrlJualan, postDataArmada : ctrlDataArmada};

@@ -16,4 +16,7 @@ router.post('/request', customerctrl.postInfoPemasok, customerctrl.postVehicle);
 /* API for request data customer */
 router.post('/product', customerctrl.postDataProduct);
 
+/* API for save customer vehicle data */
+router.post('/armada', customerctrl.postDataArmada);
+
 module.exports = router;

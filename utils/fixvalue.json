@@ -91,7 +91,9 @@
     "DataPotongGagal"       : "Data potong gagal",
     "DataPotongKosong"      : "Data potong kosong",
     "ProductJualanGagal"    : "Data penjualan gagal",
-    "ProductJualanKosong"   : "Data penjualan kosong"
+    "ProductJualanKosong"   : "Data penjualan kosong",
+    "DataArmadaSukses"      : "Data armada sukses",
+    "DataArmadaGagal"       : "Data armada gagal"
   },
   "Kode" :
   {

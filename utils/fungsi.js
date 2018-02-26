@@ -367,5 +367,15 @@ module.exports =
   {
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DataPotongGagal}};
     return strJSON;
-  }
+  },
+	DataArmadaSukses	:	function()
+	{
+		strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.DataArmadaSukses}};
+		return strJSON;
+	},
+	DataArmadaGagal	:	function()
+	{
+		strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.DataArmadaGagal}};
+		return strJSON;
+	}
 };

@@ -2,6 +2,8 @@
  * Created by ignat on 03-Jan-17.
  */
 const pgconn = require('./../utils/PGConn');
+let fixvalue = require('./../utils/fixvalue.json');
+let Fungsi = require('./../utils/fungsi');
 
 let strQuery;
 let data;
@@ -149,4 +151,28 @@ module.exports.modelJualan =
 	{
 		strQuery = 'SELECT productcode, productname, mproductpk FROM mproduct';
 		pgconn.query(strQuery, callback);
+	};
+
+module.exports.modelDataArmada =
+	function (req, res, callback)
+	{
+		let nopolisi = req.body["DataCustomer"]["nopolisi"];
+		let pemasokid = req.body["DataCustomer"]["PemasokID"];
+
+		strQuery = 'INSERT INTO m_vehicle (nopolisi) values (\'' + nopolisi + '\')\n' +
+			'ON CONFLICT (nopolisi) WHERE nopolisi=\'' + nopolisi + '\' DO UPDATE SET nopolisi=\'' + nopolisi + '\';\n' +
+			'SELECT id FROM m_vehicle WHERE nopolisi=\'' + nopolisi + '\';\n' +
+			'SELECT vehicle FROM "m_BusinessPartner" WHERE "PemasokID"=\'' + pemasokid + '\'';
+
+		pgconn.query(strQuery, function(err, hasil)
+		{
+			if(err)
+				res.status(fixvalue.Kode.Error).json(Fungsi.DataArmadaGagal());
+			else
+			{
+				let isivehicle = hasil[2].rows[0]["vehicle"] + ', ' + hasil[1].rows[0]["id"];
+				strQuery = 'UPDATE "m_BusinessPartner" SET vehicle=\'' + isivehicle + '\' WHERE "PemasokID"=\'' + pemasokid + '\'';
+				pgconn.query(strQuery, callback);
+			}
+		});
 	};
