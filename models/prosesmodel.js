@@ -143,7 +143,7 @@ module.exports.modelpotongan =
     let nourut = data["nourut"];
 //        var jum = (data["harga"] * potongan) / 100;
 
-    strQuery = 'SELECT mproductpk FROM mproduct WHERE "productcode"=\'' + product + '\'';
+    strQuery = 'SELECT productid mproductpk FROM unitprice WHERE "productcode"=\'' + product + '\'';
 
     pgconn.query(strQuery, (err, resquery) =>
     {
