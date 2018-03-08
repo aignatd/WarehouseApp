@@ -96,6 +96,12 @@ module.exports =
 	             "CustomerRsp"	:	customer, "VehicleRsp"	:	resVehicle};
     return strJSON;
   },
+	RequestKoreksiSukses	:	function(customer, timbangan)
+	{
+		strJSON =	{"CoreResponse" : {"Kode"	:	strResponID.Sukses, "Pesan"	:	strPesan.strRequestSukses},
+			         "CustomerRsp"	:	customer, "TimbangRsp"	:	timbangan};
+		return strJSON;
+	},
   UploadTimbangGagal	:	function()
   {
     strJSON = {"CoreResponse" : {"Kode"	:	strResponID.Gagal, "Pesan"	:	strPesan.strTimbanganGagal}};

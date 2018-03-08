@@ -108,10 +108,27 @@ module.exports.modelInfoPemasok =
   function (req, res, callback)
   {
     data = req.body["DataCustomer"]["PemasokID"];
+    let pekerjaanid = req.body["DataCustomer"]["PekerjaanID"];
+
     strQuery = 'SELECT id, "PemasokID" as pemasokid, panggilan, perusahaan, vehicle, telpon, "Alamat" FROM ' +
-      ' "m_BusinessPartner" WHERE "PemasokID"=\'' + data + '\'';
+              ' "m_BusinessPartner" WHERE "PemasokID"=\'' + data + '\'';
+
     pgconn.query(strQuery, callback);
   };
+
+module.exports.modelKoreksiPemasok =
+	function (req, res, callback)
+	{
+		data = req.body["DataCustomer"]["PemasokID"];
+		let pekerjaanid = req.body["DataCustomer"]["PekerjaanID"];
+
+		strQuery = 'SELECT id, "PemasokID" as pemasokid, panggilan, perusahaan, vehicle, telpon, "Alamat" FROM ' +
+			' "m_BusinessPartner" WHERE "PemasokID"=\'' + data + '\';' +
+			'SELECT * FROM pekerjaan WHERE id=' + pekerjaanid + ';' +
+			'SELECT * FROM timbangan WHERE pekerjaanid=' + pekerjaanid + ' ORDER BY nourut';
+
+		pgconn.query(strQuery, callback);
+	};
 
 module.exports.modelVehicle =
   function (req, res, callback)

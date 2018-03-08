@@ -49,16 +49,22 @@ module.exports.modelsynchronize =
       	let strRole = resquery.rows[0]["roleid"];
       	let intRole;
 
-      	if(aContainsB(strRole, '1') || aContainsB(strRole, '4') || aContainsB(strRole, '9'))
-      		intRole = 0;
+      	if(aContainsB(strRole, '4') || aContainsB(strRole, '9'))
+		      intRole = 0;
       	else
-	      if(aContainsB(strRole, '6'))
-		      intRole = 1;
-	      else
-	      if(aContainsB(strRole, '8'))
-		      intRole = 2;
-      	else
-      		intRole = -1;
+	      {
+		      console.log(strRole);
+		      if(aContainsB(strRole, '6') && aContainsB(strRole, '8'))
+			      intRole = 0;
+		      else
+		      if(aContainsB(strRole, '6'))
+			      intRole = 1;
+		      else
+		      if(aContainsB(strRole, '8'))
+			      intRole = 2;
+		      else
+			      intRole = -1;
+	      }
 
       	if(intRole === -1)
 		      res.status(FixValue.Kode.NotSuccess).json(Fungsi.synchronizeKosong());

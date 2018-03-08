@@ -34,7 +34,7 @@ let ctrlInfoPemasok = function(req, res, next)
       res.status(fixvalue.Kode.Error).json(Fungsi.RequestGagal());
     else
     {
-      if (result["rowCount"] === 0)
+      if (result.rows.length === 0)
         res.status(fixvalue.Kode.NotSuccess).json(Fungsi.RequestSalah());
       else
       {
@@ -43,6 +43,30 @@ let ctrlInfoPemasok = function(req, res, next)
       }
     }
   });
+};
+
+let ctrlKoreksiPemasok = function(req, res, next)
+{
+	CustomerModel.modelKoreksiPemasok(req, res, function(err, result)
+	{
+		if (err)
+			res.status(fixvalue.Kode.Error).json(Fungsi.RequestGagal());
+		else
+		{
+			if (result[0].rows.length === 0)
+				res.status(fixvalue.Kode.NotSuccess).json(Fungsi.RequestSalah());
+			else
+			{
+				result[0].rows[0]["nopolisi"] = result[1].rows[0]["nopolisi"];
+				result[0].rows[0]["jumlahtimbang"] = result[1].rows[0]["jumlahtimbang"];
+				result[0].rows[0]["permintaan"] = result[1].rows[0]["permintaan"];
+				result[0].rows[0]["pekerjaan"] = result[1].rows[0]["pekerjaan"];
+				result[0].rows[0]["jenistimbang"] = result[1].rows[0]["jenistimbang"];
+				result[0].rows[0]["jenistimbang"] = result[1].rows[0]["jenistimbang"];
+				res.status(fixvalue.Kode.OK).json(Fungsi.RequestKoreksiSukses(result[0].rows[0], result[2].rows));
+			}
+		}
+	});
 };
 
 let ctrlVehicle = function(req, res)
@@ -58,8 +82,9 @@ let ctrlVehicle = function(req, res)
       else
       {
         customer = req.body["CustomerRsp"];
+	      let pekerjaan = req.body["PekerjaanRsp"];
         delete customer["vehicle"];
-        res.status(fixvalue.Kode.OK).json(Fungsi.RequestSukses(result.rows, customer));
+        res.status(fixvalue.Kode.OK).json(Fungsi.RequestSukses(result.rows, customer, pekerjaan));
       }
     }
   });
@@ -154,4 +179,4 @@ let ctrlDataArmada = function(req, res)
 
 module.exports = {postRequest : ctrlRequest, postInfoPemasok : ctrlInfoPemasok, postVehicle : ctrlVehicle,
                   postProduct : ctrlProduct, postPotongan : ctrlPotongan, postDataProduct : ctrlDataProduct,
-                  postJualan : ctrlJualan, postDataArmada : ctrlDataArmada};
+                  postJualan : ctrlJualan, postDataArmada : ctrlDataArmada, postKoreksiPemasok : ctrlKoreksiPemasok};
