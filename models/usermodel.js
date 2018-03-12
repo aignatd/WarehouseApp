@@ -64,7 +64,7 @@ module.exports.modelRole =
   function (req, res, callback)
   {
     data = req.body["Hasil"];
-    strQuery = 'SELECT id, description FROM roles WHERE id IN (' + data["RoleID"] + ')';
+    strQuery = 'SELECT id, description, name FROM roles WHERE id IN (' + data["RoleID"] + ')';
     pgconn.query(strQuery, callback);
   };
 

@@ -14,6 +14,7 @@ module.exports.modelRequest =
     data = req.body["DataCustomer"];
     let nopolisi = data["nopolisi"];
     let cp = data["ContactPerson"];
+	  let kendaraan = data["Kendaraan"];
 
     delete data["nopolisi"];
 
@@ -57,12 +58,19 @@ module.exports.modelRequest =
     }
     else
     {
-    	strQuery = 'INSERT INTO m_vehicle (nopolisi) values (\'' + nopolisi + '\')\n' +
+    	let status = "Eksternal";
+
+    	if(kendaraan === 1)
+    		status = "Internal";
+
+    	strQuery = 'INSERT INTO m_vehicle (nopolisi, status) values (\'' + nopolisi + '\', \'' + status + '\')\n' +
 		    'ON CONFLICT (nopolisi) WHERE nopolisi=\'' + nopolisi + '\' DO UPDATE SET nopolisi=\'' + nopolisi + '\';\n' +
 		    'SELECT id FROM m_vehicle WHERE nopolisi=\'' + nopolisi + '\'';
 
 	    pgconn.query(strQuery, function(err, hasil)
 	    {
+	    	delete data["Kendaraan"];
+
 	    	if(err)
 			    data["vehicle"] = "1";
 	    	else
@@ -108,7 +116,6 @@ module.exports.modelInfoPemasok =
   function (req, res, callback)
   {
     data = req.body["DataCustomer"]["PemasokID"];
-    let pekerjaanid = req.body["DataCustomer"]["PekerjaanID"];
 
     strQuery = 'SELECT id, "PemasokID" as pemasokid, panggilan, perusahaan, vehicle, telpon, "Alamat" FROM ' +
               ' "m_BusinessPartner" WHERE "PemasokID"=\'' + data + '\'';
@@ -134,7 +141,7 @@ module.exports.modelVehicle =
   function (req, res, callback)
   {
     data = req.body["CustomerRsp"];
-    strQuery = 'SELECT id, nopolisi FROM m_vehicle WHERE id IN (' + data["vehicle"] + ')';
+    strQuery = 'SELECT id, nopolisi, status FROM m_vehicle WHERE id IN (' + data["vehicle"] + ')';
     pgconn.query(strQuery, callback);
   };
 
@@ -175,8 +182,14 @@ module.exports.modelDataArmada =
 	{
 		let nopolisi = req.body["DataCustomer"]["nopolisi"];
 		let pemasokid = req.body["DataCustomer"]["PemasokID"];
+		let kendaraan = req.body["DataCustomer"]["Kendaraan"];
 
-		strQuery = 'INSERT INTO m_vehicle (nopolisi) values (\'' + nopolisi + '\')\n' +
+		let status = "Eksternal";
+
+		if(kendaraan === 1)
+			status = "Internal";
+
+		strQuery = 'INSERT INTO m_vehicle (nopolisi, status) values (\'' + nopolisi + '\', \'' + status  + '\')\n' +
 			'ON CONFLICT (nopolisi) WHERE nopolisi=\'' + nopolisi + '\' DO UPDATE SET nopolisi=\'' + nopolisi + '\';\n' +
 			'SELECT id FROM m_vehicle WHERE nopolisi=\'' + nopolisi + '\';\n' +
 			'SELECT vehicle FROM "m_BusinessPartner" WHERE "PemasokID"=\'' + pemasokid + '\'';

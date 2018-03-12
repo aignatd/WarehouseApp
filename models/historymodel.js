@@ -1,8 +1,6 @@
 /**
  * Created by ignat on 03-Jan-17.
  */
-let Fungsi    = require('./../utils/fungsi');
-let FixValue  = require('./../utils/fixvalue.json');
 const pgconn = require('./../utils/PGConn');
 
 let strQuery;
@@ -13,6 +11,25 @@ module.exports.modelHistoryUSer =
   {
     data = req.body["DataUser"]["UserID"];
     let jenistimbang = req.body["DataProses"]["jenistimbang"];
+    let tglReq = req.body["DataProses"]["TglRequest"];
+    let roleuser  = req.body["DataProses"]["roleuser"];
+    let a, strRole="", strUserID="";
+
+    for(a=0; a<roleuser.length; a++)
+    {
+      let isirole = roleuser[a];
+
+	    for (let key in isirole)
+	    {
+		    if((key === "name") && (isirole[key].toLowerCase() === "superuser"))
+	        strRole = isirole[key].toLowerCase();
+		    else
+		      strRole = "";
+	    }
+    }
+
+    if(strRole !== "superuser")
+      strUserID = "\tuserid=" + data + " AND ";
 
     strQuery = "SELECT a.id, a.nopolisi, a.jumlahtimbang, a.pemasokid,\n" +
       "\tCASE\n" +
@@ -23,10 +40,9 @@ module.exports.modelHistoryUSer =
       "\tEND AS status\n" +
       "FROM\n" +
       "\tpekerjaan a\n" +
-      "WHERE\n" +
-      "\tuserid=" + data + " AND jenistimbang=" + jenistimbang +
+      "WHERE\n" + strUserID + "jenistimbang=" + jenistimbang + " AND CAST(tglbuat AS DATE)=\'" + tglReq + "\'" +
       " AND ((permintaan=-1 AND pekerjaan=-1) OR (permintaan=-1 AND pekerjaan=-2) OR (permintaan=-2 AND pekerjaan=-1)) ORDER BY ID ASC";
-      
+
     pgconn.query(strQuery, callback);
   };
 

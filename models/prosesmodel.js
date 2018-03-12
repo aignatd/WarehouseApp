@@ -53,7 +53,6 @@ module.exports.modelsynchronize =
 		      intRole = 0;
       	else
 	      {
-		      console.log(strRole);
 		      if(aContainsB(strRole, '6') && aContainsB(strRole, '8'))
 			      intRole = 0;
 		      else
