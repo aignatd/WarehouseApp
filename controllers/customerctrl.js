@@ -177,6 +177,18 @@ let ctrlDataArmada = function(req, res)
 	});
 };
 
+let ctrlSimpanKoreksi = function(req, res)
+{
+	CustomerModel.modelSimpanKoreksi(req, res, function(err, result)
+	{
+		if (err)
+			res.status(fixvalue.Kode.Error).json(Fungsi.DataArmadaGagal());
+		else
+			res.status(fixvalue.Kode.OK).json(Fungsi.DataArmadaSukses());
+	});
+};
+
 module.exports = {postRequest : ctrlRequest, postInfoPemasok : ctrlInfoPemasok, postVehicle : ctrlVehicle,
                   postProduct : ctrlProduct, postPotongan : ctrlPotongan, postDataProduct : ctrlDataProduct,
-                  postJualan : ctrlJualan, postDataArmada : ctrlDataArmada, postKoreksiPemasok : ctrlKoreksiPemasok};
+                  postJualan : ctrlJualan, postDataArmada : ctrlDataArmada, postKoreksiPemasok : ctrlKoreksiPemasok,
+									postSimpanKoreksi : ctrlSimpanKoreksi};

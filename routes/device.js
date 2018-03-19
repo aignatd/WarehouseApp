@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* API untuk mendaftar device per warehouse */
-router.post('/daftardevice', devicectrl.postdaftardevice);
+router.post('/daftardevice', devicectrl.postdaftardevice, devicectrl.postdaftardeviceselesai);
 
 /* API untuk mengambil daftar warehouse */
 router.get('/datawarehouse', devicectrl.getDataWarehouse);

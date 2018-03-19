@@ -34,6 +34,8 @@ module.exports.modelRequest =
 	    datakey = '(';
 	    dataisi = '(';
 
+	    delete data["Kendaraan"];
+
 	    for (let key in data)
 	    {
 		    if(intIdx > 0)
@@ -180,6 +182,38 @@ module.exports.modelJualan =
 module.exports.modelDataArmada =
 	function (req, res, callback)
 	{
+		let nopolisi = req.body["DataCustomer"]["nopolisi"];
+		let pemasokid = req.body["DataCustomer"]["PemasokID"];
+		let kendaraan = req.body["DataCustomer"]["Kendaraan"];
+
+		let status = "Eksternal";
+
+		if(kendaraan === 1)
+			status = "Internal";
+
+		strQuery = 'INSERT INTO m_vehicle (nopolisi, status) values (\'' + nopolisi + '\', \'' + status  + '\')\n' +
+			'ON CONFLICT (nopolisi) WHERE nopolisi=\'' + nopolisi + '\' DO UPDATE SET nopolisi=\'' + nopolisi + '\';\n' +
+			'SELECT id FROM m_vehicle WHERE nopolisi=\'' + nopolisi + '\';\n' +
+			'SELECT vehicle FROM "m_BusinessPartner" WHERE "PemasokID"=\'' + pemasokid + '\'';
+
+		pgconn.query(strQuery, function(err, hasil)
+		{
+			if(err)
+				res.status(fixvalue.Kode.Error).json(Fungsi.DataArmadaGagal());
+			else
+			{
+				let isivehicle = hasil[2].rows[0]["vehicle"] + ', ' + hasil[1].rows[0]["id"];
+				strQuery = 'UPDATE "m_BusinessPartner" SET vehicle=\'' + isivehicle + '\' WHERE "PemasokID"=\'' + pemasokid + '\'';
+				pgconn.query(strQuery, callback);
+			}
+		});
+	};
+
+module.exports.modelSimpanKoreksi =
+	function (req, res, callback)
+	{
+		console.log(req.body);
+
 		let nopolisi = req.body["DataCustomer"]["nopolisi"];
 		let pemasokid = req.body["DataCustomer"]["PemasokID"];
 		let kendaraan = req.body["DataCustomer"]["Kendaraan"];

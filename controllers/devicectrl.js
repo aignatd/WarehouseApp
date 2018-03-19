@@ -29,9 +29,13 @@ let ctrldaftardevice = function(req, res, next)
       res.status(fixvalue.Kode.Error).json(Fungsi.DataDeviceGagal());
     else
       return next();
-
-//      res.status(fixvalue.Kode.OK).json(Fungsi.DataDeviceSukses());
   });
 };
 
-module.exports = {getDataWarehouse : ctrlDataWarehouse, postdaftardevice : ctrldaftardevice};
+let ctrldaftardeviceselesai = function(req, res)
+{
+  res.status(fixvalue.Kode.OK).json(Fungsi.DataDeviceSukses());
+};
+
+module.exports = {getDataWarehouse : ctrlDataWarehouse, postdaftardevice : ctrldaftardevice,
+                  postdaftardeviceselesai : ctrldaftardeviceselesai};

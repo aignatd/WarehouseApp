@@ -22,4 +22,7 @@ router.post('/armada', customerctrl.postDataArmada);
 /* API for request data koreksi */
 router.post('/requestkoreksi', customerctrl.postKoreksiPemasok);
 
+/* API for request data koreksi */
+router.post('/simpankoreksi', customerctrl.postSimpanKoreksi);
+
 module.exports = router;
